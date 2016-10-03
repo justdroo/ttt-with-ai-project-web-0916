@@ -37,8 +37,10 @@ class Game
     @board.cells.each_with_index do |player_token, i|
       if player_token == @player_1.token
         @player_pos[player_1] << i
-      else 
+      elsif player_token == @player_2.token
         @player_pos[player_2] <<  i
+      else
+        next
       end
     end
   end 
@@ -55,11 +57,14 @@ class Game
   end
 
   def winner
-    binding.pry
-    self.get_player_pos
+    self.get_player_pos(@player_1, @player_2)
     if self.won? && WIN_COMBINATIONS.find { |win_set| win_set - @player_pos[player_1] == [] }
-      @player_1
-    end 
-  end
+      @player_1.token
+    elsif self.won? && WIN_COMBINATIONS.find { |win_set| win_set - @player_pos[player_2] == [] }
+      @player_2.token
+    else 
+      nil
+    end
+  end 
 
 end
